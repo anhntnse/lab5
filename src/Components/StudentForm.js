@@ -11,20 +11,20 @@ const StudentForm = ({
     <Form className="mb-4">
       <Row>
         <Form.Group controlId="studentName" className="mb-3">
-          <Form.Label style={{ fontWeight: "500"}}>Student Name</Form.Label>
+          <Form.Label style={{ fontWeight: "500" }}>Student Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter student name"
             name="name"
             value={newStudent.name}
             onChange={handleChange}
-            style={{ borderRadius: "5px", borderColor: "#ccc"}}
+            style={{ borderRadius: "5px", borderColor: "#ccc" }}
           />
         </Form.Group>
       </Row>
       <Row>
         <Form.Group controlId="studentCode" className="mb-3">
-          <Form.Label style={{ fontWeight: "500"}}>Student Code</Form.Label>
+          <Form.Label style={{ fontWeight: "500" }}>Student Code</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter student code"

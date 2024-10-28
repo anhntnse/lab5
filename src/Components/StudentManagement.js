@@ -1,5 +1,4 @@
-// src/components/StudentManagement.js
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import StudentForm from './StudentForm';
 import StudentTable from './StudentTable';
 import UpdateStudentModal from './UpdateStudentModal'; // Import the modal
@@ -16,7 +15,6 @@ const StudentManagement = () => {
       try {
         const response = await fetch("https://student-api-nestjs.onrender.com/students");
         const data = await response.json();
-        console.log(data.data);
         const transformedData = data.data.map((std) => ({
           id: std._id,
           name: std.name,
@@ -40,10 +38,9 @@ const StudentManagement = () => {
     }));
   };
 
-
   // Add new student to the top of the list
-  const handleAddStudent = async() => {
-    if (newStudent.name && newStudent.code) {
+  const handleAddStudent = async () => {
+    if (newStudent.name && newStudent.studentCode) {
       try {
         const response = await fetch("https://student-api-nestjs.onrender.com/students", {
           method: 'POST',
@@ -51,22 +48,22 @@ const StudentManagement = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(newStudent),
-      });
-      if (response.ok) {        
-      setStudents(prevStudents => [
-        { id: prevStudents.length + 1, ...newStudent }, // New student at the top
-        ...prevStudents,
-      ]);
-      setNewStudent({ name: '', studentCode: '', isActive: false });
+        });
+        if (response.ok) {
+          const addedStudent = await response.json(); // Assuming the API returns the added student
+          setStudents(prevStudents => [
+            { id: addedStudent._id, ...newStudent }, // New student at the top
+            ...prevStudents,
+          ]);
+          setNewStudent({ name: '', studentCode: '', isActive: false });
+        } else {
+          console.error("Error adding student:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error adding student:", error);
+      }
     }
-    else {
-      console.error("Error adding student:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error adding student:", error);
-  }
-}
-};
+  };
 
   // Clear form inputs and remove all students
   const handleClear = () => {
@@ -86,31 +83,28 @@ const StudentManagement = () => {
   };
 
   // Handle delete student
-  const handleDelete = async(id) => {
-
+  const handleDelete = async (id) => {
     try {
       const response = await fetch(`https://student-api-nestjs.onrender.com/students/${id}`, {
         method: 'DELETE',
-        });
-        if (response.ok) {
-          const updatedStudents = students.filter(student => student.id !== id);
-          setStudents(updatedStudents);
-          const selectedCount = updatedStudents.filter(student => student.selected).length;
-          setSelectedCount(selectedCount);
-
-        } else {
-          console.error("Error delete student: ",  response.statusText);
-        }
-      } catch(error) {
-        console.error("Error delete student: ", error);
+      });
+      if (response.ok) {
+        const updatedStudents = students.filter(student => student.id !== id);
+        setStudents(updatedStudents);
+        const selectedCount = updatedStudents.filter(student => student.selected).length;
+        setSelectedCount(selectedCount);
+      } else {
+        console.error("Error delete student:", response.statusText);
       }
-
+    } catch (error) {
+      console.error("Error delete student:", error);
+    }
   };
 
-  const handleEdit = async(student) => {
+  const handleEdit = (student) => {
     setCurrentStudent(student);
     setShowModal(true);
-  }
+  };
 
   const handleUpdate = async (updatedStudent) => {
     try {
@@ -119,10 +113,7 @@ const StudentManagement = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: updatedStudent.name,
-          isActive: updatedStudent.isActive,
-        }),
+        body: JSON.stringify(updatedStudent),
       });
       if (response.ok) {
         const updatedStudents = students.map(student =>
@@ -142,7 +133,7 @@ const StudentManagement = () => {
       <h3 className="text-center mb-4" style={{ fontWeight: '500' }}>Student Management</h3>
 
       <h4 className="mb-4 text-left" style={{ fontWeight: '500', fontSize: '1.5rem', color: 'blue' }}>
-        Total Selected Student: {selectedCount}
+        Total Selected Students: {selectedCount}
       </h4>
 
       {/* Form to Add Student */}
@@ -158,23 +149,23 @@ const StudentManagement = () => {
       {/* Student List Table */}
       <div className="card p-4 mb-4" style={{ borderRadius: '10px', border: '1px solid #eee' }}>
         <h4 className="text-center mb-3" style={{ fontWeight: '500' }}>Student List</h4>
-        <StudentTable 
-          students={students} 
-          handleSelect={handleSelect} 
-          handleDelete={handleDelete} 
+        <StudentTable
+          students={students}
+          handleSelect={handleSelect}
+          handleDelete={handleDelete}
           handleEdit={handleEdit}
-
         />
-        <UpdateStudentModal
+      </div>
+
+      {/* Update Modal */}
+      <UpdateStudentModal
         show={showModal}
         handleClose={() => setShowModal(false)}
         studentData={currentStudent}
         handleUpdate={handleUpdate}
       />
-      </div>
     </div>
   );
-    
 };
 
 export default StudentManagement;
