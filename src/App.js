@@ -1,19 +1,17 @@
-import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import StudentManagement from './Components/StudentManagement';
-import { Container, Row, Col, InputGroup, Button } from "react-bootstrap";
-import { useState } from "react";
+import React from "react";
 
-function App() {
-  const [inputText, setInputText] = useState("");
+import { BrowserRouter as Router } from "react-router-dom";
+
+import AppRoutes from "./routes/routes";
+
+const App = () => {
   return (
-    <Container>
-      <Row>
-      <StudentManagement />
-      </Row>
-    </Container>
+    <Router>
+      <AppRoutes />
+    </Router>
   );
-}
+};
 
 export default App;

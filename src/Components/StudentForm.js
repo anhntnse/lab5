@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { FaEraser, FaPlusCircle } from "react-icons/fa";
 
 const StudentForm = ({
   newStudent,
@@ -29,8 +28,8 @@ const StudentForm = ({
           <Form.Control
             type="text"
             placeholder="Enter student code"
-            name="code"
-            value={newStudent.code}
+            name="studentCode"
+            value={newStudent.studentCode}
             onChange={handleChange}
             style={{ borderRadius: "5px", borderColor: "#ccc" }}
           />
@@ -40,8 +39,8 @@ const StudentForm = ({
         <Form.Check
           type="checkbox"
           label="Still Active"
-          name="active"
-          checked={newStudent.active}
+          name="isActive"
+          checked={newStudent.isActive}
           onChange={handleChange}
         />
       </Form.Group>
