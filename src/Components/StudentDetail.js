@@ -21,17 +21,38 @@ const StudentDetail = () => {
     }, [id]);
 
     if (!student) {
-        return <div>Loading...</div>;
+        return <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>;
     }
 
     return (
-        <div>
-            <h2>{student.name}</h2>
-            <p>Student Code: {student.studentCode}</p>
-            <p>Status: {student.isActive ? 'Active' : 'Inactive'}</p>
-            {/* Add more fields as necessary */}
+        <div style={styles.card}>
+            <h2 style={styles.title}>{student.name}</h2>
+            <p style={styles.text}><strong>Student Code:</strong> {student.studentCode}</p>
+            <p style={styles.text}><strong>Status:</strong> {student.isActive ? 'Active' : 'Inactive'}</p>
+            {/* Additional fields can go here */}
         </div>
     );
+};
+
+const styles = {
+    card: {
+        width: '280px',
+        margin: '20px auto',
+        padding: '15px',
+        borderRadius: '8px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#f9f9f9',
+        textAlign: 'center',
+    },
+    title: {
+        fontSize: '20px',
+        color: '#333',
+    },
+    text: {
+        fontSize: '16px',
+        color: '#555',
+        margin: '8px 0',
+    },
 };
 
 export default StudentDetail;
